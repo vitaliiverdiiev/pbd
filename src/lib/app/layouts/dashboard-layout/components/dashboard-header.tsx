@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from "@/features";
+import { ThemeSwitcher } from '@/features';
 
 export const DashboardHeader = () => {
   return (

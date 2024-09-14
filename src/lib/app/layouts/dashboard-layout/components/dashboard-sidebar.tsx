@@ -1,6 +1,6 @@
-import { cn } from "@/shared/utils";
-import { SquaresFour, TagSimple } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
+import { cn } from '@/shared/utils';
+import { SquaresFour, TagSimple } from '@phosphor-icons/react/dist/ssr';
+import Link from 'next/link';
 
 export const DashboardSidebar = () => {
   return (
@@ -10,8 +10,8 @@ export const DashboardSidebar = () => {
         <Link
           href="/dashboard"
           className={cn(
-            "hover:bg-slate-100 flex items-center gap-2 text-xl leading-none",
-            "border-l-8 border-transparent px-2 py-4 hover:text-purple-300 hover:border-blue-400 rounded-tr-md rounded-br-md"
+            'hover:bg-slate-100 flex items-center gap-2 text-xl leading-none',
+            'border-l-8 border-transparent px-2 py-4 hover:text-purple-300 hover:border-blue-400 rounded-tr-md rounded-br-md'
           )}
         >
           <SquaresFour size={24} />
@@ -20,8 +20,8 @@ export const DashboardSidebar = () => {
         <Link
           href="/hekko"
           className={cn(
-            "hover:bg-slate-100 flex items-center gap-2 text-xl leading-none",
-            "border-l-8 border-transparent px-2 py-4 hover:text-purple-300 hover:border-blue-400 rounded-tr-md rounded-br-md"
+            'hover:bg-slate-100 flex items-center gap-2 text-xl leading-none',
+            'border-l-8 border-transparent px-2 py-4 hover:text-purple-300 hover:border-blue-400 rounded-tr-md rounded-br-md'
           )}
         >
           <TagSimple size={24} />

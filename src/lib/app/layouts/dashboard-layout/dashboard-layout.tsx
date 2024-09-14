@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
-import { DashboardHeader, DashboardSidebar } from "./components";
+import { PropsWithChildren } from 'react';
+import { DashboardHeader, DashboardSidebar } from './components';
 
 export const DashboardLayout = ({ children }: PropsWithChildren) => {
   return (
