@@ -1,27 +1,48 @@
-import { forwardRef } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { Button } from '@/shared/ui/button';
-import { ImageBroken, Trash } from '@phosphor-icons/react';
-import { tv } from 'tailwind-variants';
-import { useUploadImage } from '@/shared/ui/upload-image/models/hooks/use-upload-image';
+import { imageUploaderVariants } from '@/shared/ui/upload-image/models/variants';
+import { ImageBroken } from '@phosphor-icons/react';
 
-export type ImageUploaderProps = Pick<
-  UseFormRegisterReturn,
-  'onChange' | 'onBlur' | 'name'
->;
+export type ImageUploaderProps = {
+  register: UseFormRegisterReturn;
+};
 
-export const ImageUploader = forwardRef(function Uploader(
-  { name, onBlur, onChange }: ImageUploaderProps,
-  ref
-) {
-  const { styles, hasImage } = useUploadImage();
+export const ImageUploader = () => {
+  const [previewSrc, setPreviewSrc] = useState(''); // /images/photo1700561435.jpeg
+  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
+
+  const onUpload = () => {
+    if (hiddenInputRef.current) {
+      hiddenInputRef.current.click();
+    }
+  };
+
+  const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0];
+
+    const urlImage = URL.createObjectURL(file);
+
+    setPreviewSrc(urlImage);
+  };
+
+  const styles = imageUploaderVariants();
 
   return (
     <div className={styles.wrapper()}>
       <div className={styles.imageWrapper()}>
-        {hasImage ? (
-          <Image fill src={hasImage} alt="name" className={styles.image()} />
+        <input
+          type="file"
+          className="hidden"
+          ref={hiddenInputRef}
+          onChange={(e) => {
+            handleUploadedFile(e);
+            // onChange(e);
+          }}
+        />
+        {!!previewSrc ? (
+          <Image fill src={previewSrc} alt="name" className={styles.image()} />
         ) : (
           <ImageBroken className={styles.icon()} />
         )}
@@ -31,7 +52,11 @@ export const ImageUploader = forwardRef(function Uploader(
           Please upload square image, size less than 100KB
         </p>
         <div className={styles.actionsWrapper()}>
-          <Button variant="outline" className="rounded-[5px]">
+          <Button
+            variant="outline"
+            className="rounded-[5px]"
+            onClick={onUpload}
+          >
             Choose file
           </Button>
           <p className={styles.fileNameSpace()}>No File Chosen</p>
@@ -39,7 +64,7 @@ export const ImageUploader = forwardRef(function Uploader(
       </div>
     </div>
   );
-});
+};
 
 // export const ImageUploader = forwardRef(function Uploader(props: UnknownType) {
 //   console.log({ props });

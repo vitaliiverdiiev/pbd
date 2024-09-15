@@ -1,20 +1,22 @@
-import { useState } from 'react';
+import { ChangeEvent, ForwardedRef, useRef, useState } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import { imageUploaderVariants } from '../../models/variants';
 
-export const useUploadImage = () => {
-  // console.log({ name, onBlur, onChange });
-
-  // const hiddenInputRef = useRef();
-
+export const useUploadImage = ({
+  register,
+}: {
+  register: UseFormRegisterReturn;
+}) => {
   const [previewSrc, setPreviewSrc] = useState(''); // /images/photo1700561435.jpeg
+  const hiddenInputRef = useRef();
 
-  // const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const image = event.target.files![0];
+  const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const image = event.target.files![0];
 
-  //   const imageUrl = URL.createObjectURL(image);
+    const imageUrl = URL.createObjectURL(image);
 
-  //   setPreviewSrc(imageUrl);
-  // };
+    setPreviewSrc(imageUrl);
+  };
 
   // const onUpload = () => {
   //   (hiddenInputRef as UnknownType).current!.click();
@@ -24,5 +26,5 @@ export const useUploadImage = () => {
 
   const styles = imageUploaderVariants();
 
-  return { styles, hasImage: previewSrc };
+  return { styles, hasImage: previewSrc, hiddenInputRef };
 };
