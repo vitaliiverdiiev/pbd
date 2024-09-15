@@ -1,33 +1,61 @@
-import { cn } from '@/shared/utils';
-import { SquaresFour, TagSimple } from '@phosphor-icons/react/dist/ssr';
-import Link from 'next/link';
+import { SquaresFour } from '@phosphor-icons/react/dist/ssr';
+import Link, { LinkProps } from 'next/link';
+import { cloneElement, PropsWithChildren, ReactElement } from 'react';
+import { tv } from 'tailwind-variants';
+
+export const linkVariants = tv({
+  base: '',
+  slots: {
+    linkWrapper:
+      'group flex gap-3 items-center hover:bg-white rounded-2xl py-3 px-4',
+    icon: 'text-[#4FD1C5] group-hover:text-[#ffffff]',
+    iconWrapper:
+      'flex-center rounded-xl bg-white group-hover:bg-[#4FD1C5] min-w-[30px] w-[30px] min-h-[30px] h-[30px]',
+    linkText: 'font-bold text-[#A0AEC0] group-hover:text-[#2D3748] text-xs',
+  },
+});
+
+export type DashboardSidebarLinkProps = LinkProps &
+  PropsWithChildren & {
+    icon?: ReactElement;
+    iconPosition?: 'left' | 'right';
+    label?: string;
+  };
+
+export const DashboardSidebarLink = ({
+  href,
+  icon,
+  iconPosition = 'left',
+  label,
+}: DashboardSidebarLinkProps) => {
+  const styles = linkVariants();
+
+  const clonedIcon = icon
+    ? cloneElement(icon, {
+        size: 20,
+        className: `${styles.icon()}`,
+      })
+    : null;
+
+  const iconWrapped = <div className={styles.iconWrapper()}>{clonedIcon}</div>;
+
+  return (
+    <Link href={href} className={styles.linkWrapper()}>
+      {icon && iconPosition === 'left' && iconWrapped}
+      <span className={styles.linkText()}>{label}</span>
+      {icon && iconPosition === 'right' && iconWrapped}
+    </Link>
+  );
+};
 
 export const DashboardSidebar = () => {
   return (
-    <aside className="dashboard-sidebar w-[300px] border-r-2 pr-4 border-slate-200">
-      <div className="">
-        <p className="text-slate-600 text-md uppercase">Main</p>
-        <Link
-          href="/dashboard"
-          className={cn(
-            'hover:bg-slate-100 flex items-center gap-2 text-xl leading-none',
-            'border-l-8 border-transparent px-2 py-4 hover:text-purple-300 hover:border-blue-400 rounded-tr-md rounded-br-md'
-          )}
-        >
-          <SquaresFour size={24} />
-          Dashboard
-        </Link>
-        <Link
-          href="/hekko"
-          className={cn(
-            'hover:bg-slate-100 flex items-center gap-2 text-xl leading-none',
-            'border-l-8 border-transparent px-2 py-4 hover:text-purple-300 hover:border-blue-400 rounded-tr-md rounded-br-md'
-          )}
-        >
-          <TagSimple size={24} />
-          Hekko
-        </Link>
-      </div>
+    <aside className="dashboard-sidebar w-[264px] p-8">
+      <DashboardSidebarLink
+        href="dashboard"
+        icon={<SquaresFour />}
+        label="Dashboard"
+      />
     </aside>
   );
 };
