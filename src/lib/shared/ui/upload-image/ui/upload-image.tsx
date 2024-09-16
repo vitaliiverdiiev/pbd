@@ -1,198 +1,84 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, forwardRef, useRef, useState } from 'react';
 import Image from 'next/image';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import mergeRefs from 'merge-refs';
 import { Button } from '@/shared/ui/button';
-import { imageUploaderVariants } from '@/shared/ui/upload-image/models/variants';
+import { imageUploaderVariants } from '../models';
 import { ImageBroken } from '@phosphor-icons/react';
 
-export type ImageUploaderProps = {
-  register: UseFormRegisterReturn;
-};
+export type ImageUploaderProps = UseFormRegisterReturn;
 
-export const ImageUploader = () => {
-  const [previewSrc, setPreviewSrc] = useState(''); // /images/photo1700561435.jpeg
-  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
+export const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(
+  ({ name, onChange, onBlur }, ref) => {
+    const [previewSrc, setPreviewSrc] = useState('');
+    const [file, setFile] = useState<File | null>(null);
+    const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 
-  const onUpload = () => {
-    if (hiddenInputRef.current) {
-      hiddenInputRef.current.click();
-    }
-  };
+    const onUpload = () => {
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.click();
+      }
+    };
 
-  const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files![0];
+    const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
+      console.log({ event: event.target.files });
 
-    const urlImage = URL.createObjectURL(file);
+      const file = event.target.files![0];
+      setFile(file);
 
-    setPreviewSrc(urlImage);
-  };
+      const urlImage = URL.createObjectURL(file);
+      setPreviewSrc(urlImage);
 
-  const styles = imageUploaderVariants();
+      console.log(file.name);
 
-  return (
-    <div className={styles.wrapper()}>
-      <div className={styles.imageWrapper()}>
-        <input
-          type="file"
-          className="hidden"
-          ref={hiddenInputRef}
-          onChange={(e) => {
-            handleUploadedFile(e);
-            // onChange(e);
-          }}
-        />
-        {!!previewSrc ? (
-          <Image fill src={previewSrc} alt="name" className={styles.image()} />
-        ) : (
-          <ImageBroken className={styles.icon()} />
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-[10px]">
-        <p className={styles.hint()}>
-          Please upload square image, size less than 100KB
-        </p>
-        <div className={styles.actionsWrapper()}>
-          <Button
-            variant="outline"
-            className="rounded-[5px]"
-            onClick={onUpload}
-          >
-            Choose file
-          </Button>
-          <p className={styles.fileNameSpace()}>No File Chosen</p>
+      onChange(event);
+    };
+
+    const styles = imageUploaderVariants();
+
+    return (
+      <div className={styles.wrapper()}>
+        <div className={styles.imageWrapper()}>
+          <input
+            type="file"
+            className="hidden"
+            ref={mergeRefs(ref, hiddenInputRef)}
+            onChange={(e) => {
+              handleUploadedFile(e);
+            }}
+            name={name}
+            onBlur={onBlur}
+          />
+          {!!previewSrc ? (
+            <Image
+              fill
+              src={previewSrc}
+              alt="name"
+              className={styles.image()}
+            />
+          ) : (
+            <ImageBroken className={styles.icon()} />
+          )}
+        </div>
+        <div className="flex flex-1 flex-col gap-[10px]">
+          <p className={styles.hint()}>
+            Please upload square image, size less than 100KB
+          </p>
+          <div className={styles.actionsWrapper()}>
+            <Button
+              variant="outline"
+              className="rounded-[5px]"
+              onClick={onUpload}
+              type="button"
+            >
+              Choose file
+            </Button>
+            <p className={styles.fileNameSpace()}>
+              {!file ? 'No File Chosen' : file.name}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-// export const ImageUploader = forwardRef(function Uploader(props: UnknownType) {
-//   console.log({ props });
-
-//   const hiddenInputRef = useRef();
-
-//   const [preview, setPreview] = useState('');
-
-//   const { ref: registerRef, onChange, ...rest } = props.register;
-
-//   const handleUploadedFile = (event: ChangeEvent<HTMLInputElement>) => {
-//     const file = event.target.files![0];
-
-//     const urlImage = URL.createObjectURL(file);
-
-//     setPreview(urlImage);
-//   };
-
-//   const onUpload = () => {
-//     (hiddenInputRef as UnknownType).current!.click();
-//   };
-
-//   const uploadButtonLabel = preview ? 'Change image' : 'Upload image';
-//   return <ImageUploaderUi />;
-
-//   return (
-//     <div className="">
-//       <button className="relative group bg-transparent rounded-2xl overflow-hidden">
-//         <div className="flex relative w-[400px] z-10 h-[200px] border-2 border-red-300 ">
-//           <Image
-//             fill={true}
-//             className="object-cover w-[100%]"
-//             alt="avatar"
-//             src={preview}
-//           />
-//         </div>
-//         <div
-//           className={cn(
-//             'opacity-0 flex-center bg-black/50 group-hover:opacity-100 transition-opacity duration-300 absolute top-0 left-0 w-full h-full z-20 text-white'
-//           )}
-//         >
-//           <span>{uploadButtonLabel}</span>
-//         </div>
-//         {!preview && (
-//           <div
-//             className={cn(
-//               'flex-center bg-white group-hover:opacity-100 transition-opacity duration-300 absolute top-0 left-0 w-full h-full z-20 text-[#010369]'
-//             )}
-//           >
-//             <span>{uploadButtonLabel}</span>
-//           </div>
-//         )}
-//       </button>
-//     </div>
-//   );
-// });
-
-// NEWWWWWWW
-
-{
-  /* <div className="group relative w-fit h-fit">
-<button
-  type="button"
-  onClick={(e) => {
-    e.stopPropagation();
-    onUpload();
-  }}
-  className={cn('w-[400px] h-[200px] border-red-300 border-2 relative')}
->
-  {/* <input
-    className="hidden"
-    type="file"
-    name="profilePicture"
-    // {...rest}
-    onChange={(e) => {
-      handleUploadedFile(e);
-      onChange(e);
-    }}
-    ref={(e) => {
-      // registerRef(e);
-      (hiddenInputRef.current as UnknownType) = e;
-    }}
-  /> */
-}
-
-{
-  /* <Image
-    fill
-    className="object-center object-cover w-[100%] absolute z-0"
-    alt="avatar"
-    src={previewSrc}
-  /> */
-}
-{
-  /* {previewSrc ? (
-    // <div
-    //   className={cn(
-    //     'opacity-0 group-hover:opacity-100 transition-opacity duration-200',
-    //     'space-y-5 border-4 border-fuchsia-200'
-    //   )}
-    // >
-    //   <p>{uploadButtonLabel}</p>
-    // </div>
-  ) : (
-    // <div
-    //   className={cn(
-    //     'border-2 border-green-500',
-    //     'h-full flex-center bg-[#E2E6EC]',
-    //     'absolute-top z-10'
-    //   )}
-    // >
-    //   <ImageBroken size={64} weight='thin' />
-    // </div>
-  )} */
-}
-// </button>
-// <div className="absolute top-0 right-0 pl-10 hidden group-hover:flex-center">
-//   <Button
-//     variant="link"
-//     size="icon"
-//     className=""
-//     onClick={(e) => {
-//       e.stopPropagation();
-//       setPreviewSrc('');
-//     }}
-//   >
-//     <Trash size={16} color="red" />
-//   </Button>
-// </div>
-// </div>
-// ); */}
+    );
+  }
+);
