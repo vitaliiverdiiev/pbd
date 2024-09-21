@@ -2,10 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {}
+:root {
+  --text: #ffffff;
+  --bg: #1B1C1D;
+
+  --danger: #EF635A;
+  --warning: #F8DA00;
+  --success: #75E4AF;
+  --info: #4795F9;
+  --primary: #6456FF;
+}
 
 @media (prefers-color-scheme: dark) {
-  :root {}
+  :root {
+    --text: #1B1C1D;
+    --bg: #ffffff;
+  }
 }
 
 body {}
