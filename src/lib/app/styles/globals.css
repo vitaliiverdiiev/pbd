@@ -2,25 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --text: #ffffff;
-  --bg: #1B1C1D;
+@import url("./default.css");
+@import url("./layouts/dashboard.css");
 
-  --danger: #EF635A;
-  --warning: #F8DA00;
-  --success: #75E4AF;
-  --info: #4795F9;
-  --primary: #6456FF;
+:root {
+  --text: #1b1c1d;
+  --bg: #ffffff;
+  --text-s: #7C859A;
+  --bg-s: #F5F6F7;
+  
+  --danger: #ef635a;
+  --warning: #f8da00;
+  --success: #75e4af;
+  --info: #4795f9;
+  --primary: #6456ff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #1B1C1D;
-    --bg: #ffffff;
+    --text: #ffffff;
+    --bg: #1b1c1d;
   }
 }
-
-body {}
 
 @layer utilities {
   .text-balance {
