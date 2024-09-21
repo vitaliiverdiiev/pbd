@@ -1,4 +1,4 @@
-import { DashboardHeader, DashboardSidebar } from "@/app/layouts";
+import { DashboardHeader, DashboardSidebar } from "@/widgets/layouts";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
