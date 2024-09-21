@@ -11,6 +11,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("Render: ", "Layout");
   return (
     <div className="dashboard"> 
       <DashboardHeader />
