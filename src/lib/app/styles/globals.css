@@ -3,14 +3,15 @@
 @tailwind utilities;
 
 @import url("./default.css");
+@import url("./scrollbar.css");
 @import url("./layouts/dashboard.css");
 
 :root {
   --text: #1b1c1d;
   --bg: #ffffff;
-  --text-s: #7C859A;
-  --bg-s: #F5F6F7;
-  
+  --text-s: #7c859a;
+  --bg-s: #f5f6f7;
+
   --danger: #ef635a;
   --warning: #f8da00;
   --success: #75e4af;
@@ -26,7 +27,17 @@
 }
 
 @layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .bordered {
+    border: 1px solid red;
+  }
   .text-balance {
     text-wrap: balance;
+  }
+
+  .active-link {
+    @apply before:bg-yellow-400 bg-slate-600 text-bg;
   }
 }

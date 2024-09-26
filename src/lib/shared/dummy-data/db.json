@@ -1,0 +1,16 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Learn React: Advanced Concepts",
+      "description": "Hooks, Patterns, SOLID",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Create a responsive Mega Menu",
+      "description": "With dropdowns",
+      "completed": false
+    }
+  ]
+}
